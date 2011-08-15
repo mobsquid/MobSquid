@@ -1,0 +1,5 @@
+# Do not check in bin directories.
+android/examples/gesture_map/bin/*
+
+# Don't check in Mac stuff.
+*.DS_Store

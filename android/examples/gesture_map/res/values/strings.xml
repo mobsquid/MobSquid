@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, GestureMapsActivity!</string>
+    <string name="app_name">GestureMaps</string>
+
+    <string name="maps_api_key">0U6-kZrO-2wgjN5AukA6NhplW6CZEpNIAyilm1g</string>
+</resources>
