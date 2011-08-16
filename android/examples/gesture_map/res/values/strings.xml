@@ -3,5 +3,11 @@
     <string name="hello">Hello World, GestureMapsActivity!</string>
     <string name="app_name">MobSquid Gesture Maps</string>
 
+    <!-- This is the release maps api key -->
     <string name="maps_api_key">0U6-kZrO-2wgmMbv7aJakLrSxGjDLvbX33x1B5w</string>
+
+    <!-- The debug maps api key -->
+    <!-- $ keytool -list -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android -keypass android -->
+    <!-- http://code.google.com/android/maps-api-signup.html -->
+    <string name="maps_api_key_dev">0U6-kZrO-2wgjN5AukA6NhplW6CZEpNIAyilm1g</string>
 </resources>

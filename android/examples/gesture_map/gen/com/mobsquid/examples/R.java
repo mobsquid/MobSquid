@@ -24,6 +24,13 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f040001;
         public static final int hello=0x7f040000;
+        /**  This is the release maps api key 
+         */
         public static final int maps_api_key=0x7f040002;
+        /**  The debug maps api key 
+ $ keytool -list -alias androiddebugkey -keystore ~/.android/debug.keystore -storepass android -keypass android 
+ http://code.google.com/android/maps-api-signup.html 
+         */
+        public static final int maps_api_key_dev=0x7f040003;
     }
 }

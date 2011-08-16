@@ -1,14 +1,17 @@
 package com.mobsquid.examples;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.mobsquid.DetectorEvent;
 import com.mobsquid.MobSquid;
 import com.mobsquid.MobSquidListener;
 import com.mobsquid.OrientationDetector;
+import com.mobsquid.WalkingDetector;
 
 /**
  * Shows a map that can be controlled through hand gestures. Turn the phone
@@ -19,6 +22,7 @@ import com.mobsquid.OrientationDetector;
 public class GestureMapsActivity extends MapActivity
     implements MobSquidListener {
   MapView mapView;
+  MyLocationListener locationListener;
 
   /**
    * The point on the screen where the user is pressing. Used to zoom in and
@@ -28,11 +32,17 @@ public class GestureMapsActivity extends MapActivity
   int yPress = 0;
 
   /**
+   * Zoom in the map only the first time the user was walking.
+   */
+  boolean firstTimeLocation = true;
+
+  /**
    * Called when the activity is first created.
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    locationListener = new MyLocationListener(this);
 
     // Initialize the library.
     MobSquid.init(this, "5e84fa5ffb9b53f489512d05839d44");
@@ -56,6 +66,9 @@ public class GestureMapsActivity extends MapActivity
   public void onStop() {
     super.onStop();
     MobSquid.onStop(this);
+
+    locationListener.stop();
+    firstTimeLocation = true;
   }
 
   /**
@@ -107,6 +120,37 @@ public class GestureMapsActivity extends MapActivity
       System.out.println("Not fixed surface");
       mapView.setTraffic(false);
       break;
+
+    case DetectorEvent.WALKING:
+      // When I start walking zoom in the map a little bit, zoom it out when
+      // I stop walking.
+      if (event.context.getInt("state") == WalkingDetector.WALKING) {
+        mapView.getController().zoomIn();
+        mapView.getController().zoomIn();
+      } else {
+        mapView.getController().zoomOut();
+        mapView.getController().zoomOut();
+      }
+    }
+  }
+
+  /**
+   * Handles location updates from the LocationListener.
+   */
+  protected void onLocationChanged(Location location) {
+    MobSquid.logLocation(location);
+
+    if (firstTimeLocation) {
+      // Also move the current location to the center of the map and set the zoom
+      // level depending on whether the user is walking or not.
+      double lat = location.getLatitude();
+      double lng = location.getLongitude();
+      GeoPoint p = new GeoPoint((int)(lat * 1000000), (int)(lng * 1000000));
+
+      mapView.getController().animateTo(p);
+      mapView.getController().setZoom(14);
+
+      firstTimeLocation = false;
     }
   }
 
