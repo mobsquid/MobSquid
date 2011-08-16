@@ -107,7 +107,6 @@ public class GestureMapsActivity extends MapActivity
       System.out.println("Not fixed surface");
       mapView.setTraffic(false);
       break;
-
     }
   }
 
